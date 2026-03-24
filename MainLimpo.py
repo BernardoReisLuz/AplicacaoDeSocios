@@ -1,4 +1,4 @@
-# Falta : Parte dos dois fatores , parte de liberar a atividade , parte do anexo ao banco de dados , otimizar
+# Falta : Parte dos dois fatores , parte de liberar a atividade , parte do anexo ao banco de dados , otimizar, validações
 # Feito: A base do codigo da parte do login ja esta encaminhada 
 #bonus : talvez tenhamos que fazer uma interface mesmo ela nao sendo obrigatoria 
 #Falta tmb os levatamentos de requisitos , funcionais e nao funcionais , fluxo que vemos no treco do rubem , diagrama de classe(todos que nos sabemos) , descrisao do escopo,arquitetura do sistema 
@@ -32,6 +32,12 @@ while (opcao !=3 ):
             if(username_start == None and senha_account == None):
                 print("Qual sera o email de acesso ao usuario")
                 username_start= input()
+                while True: #vai que nao preenche o email, ainda tenho que fazer uma verificação sobre o email para nao recer a sem gmail.com
+                    if(username_start == None or username_start == "") : 
+                        print("Preecha com um email:")
+                        username_start = input()
+                    else:
+                     break 
                 print("Digite a senha dessa conta")
                 senha1 = input()
                 print("Escreva novamente a mesma")
