@@ -1,55 +1,72 @@
-# Falta : Parte dos dois fatores , parte de liberar a atividade , parte do anexo ao banco de dados , otimizar, validações
+# Falta : Parte dos dois fatores , parte de liberar a atividade , parte do anexo ao banco de dados , otimizar, validações(email)
 # Feito: A base do codigo da parte do login ja esta encaminhada 
 #bonus : talvez tenhamos que fazer uma interface mesmo ela nao sendo obrigatoria 
 #Falta tmb os levatamentos de requisitos , funcionais e nao funcionais , fluxo que vemos no treco do rubem , diagrama de classe(todos que nos sabemos) , descrisao do escopo,arquitetura do sistema 
 #detalhamento de FrameWorks 
-print("Qual operacao deseja realizar ")
-opcao = 0 
+import re #comparar se vai ter os caracters que foram pedidos dentro da requisição re
 username_start = None
 senha_account= None
-while (opcao !=3 ):
+
+while (True ):
+    print("Qual operacao deseja realizar ")
     print("1- Logar 2- Criar 3-Sair ")
     selecao = input()
+    
     match (selecao):
 
         case "1" :
-            if(username_start == None):
+         
+            if(username_start == None or username_start == ""):
                 print("Voce nao possui uma conta ")
             else:
-                print("Informe o email do login")
-                email_cheak = input()
-                print("Informe a senha da conta")
-                password_cheak = input()
+                email_cheak = str(input("Informe o email de acesso:"))
+                password_cheak = str(input("Informe a senha de acesso:"))
                 if(email_cheak == username_start and  password_cheak == senha_account):
                     print("Acesso liberado")
                 elif(email_cheak == username_start and password_cheak != senha_account ):
                     print("A senha esta incorreta")
                 else:
                     print("Usuario e Senha ambos estão incorreto ")
+        
         case "2" :
-            #Precisa fazer uma validacao da senha para ser no minimo 8 digitos e com ao menos 1 letra em caps , 1 caracter especial 
             #Gostaria de fazer isso em poo , mas estou com um pouco de dificuldade na sintaxe e me perdendo pelo padrao que me recordo no Java
             if(username_start == None and senha_account == None):
-                print("Qual sera o email de acesso ao usuario")
-                username_start= input()
+                username_start = str(input("Digite o email de acesso do usuario:"))
                 while True: #vai que nao preenche o email, ainda tenho que fazer uma verificação sobre o email para nao recer a sem gmail.com
                     if(username_start == None or username_start == "") : 
-                        print("Preecha com um email:")
-                        username_start = input()
+                        username_start = str(input("Preecha com um email:"))
                     else:
                      break 
-                print("Digite a senha dessa conta")
-                senha1 = input()
-                print("Escreva novamente a mesma")
-                senha2 = input()
-                if(senha1 != senha2):
-                    print("A senha deve ser a mesma")
-                else: 
-                    senha_account = senha2
-                    print("conta criada")
-                    print(f"Usuario:{username_start} senha: {senha_account}")
+                
+                print("Senha deve ter \n" \
+                " -Ao menos 8 digitos \n" \
+                " -Ao menos 1 caracter especial(!@#$%&*) \n" \
+                " -Ao menos 1 numero \n" \
+                " -Ao menos 1 letra maiúscula"
+                )
+                senha1 = input("Digite a senha:")
+                while not(re.search(r'.{8,}',senha1) and re.search(r'[A-Z]',senha1) and re.search(r'[!@#$%&*"]',senha1) and re.search(r'\d', senha1)):
+                     print("Senha deve ter \n" \
+                " -Ao menos 8 digitos \n" \
+                " -Ao menos 1 caracter especial(!@#$%&*) \n" \
+                " -Ao menos 1 numero \n" \
+                " -Ao menos 1 letra maiúscula"
+                )
+                     print("Senha deve conter o requisitos informados a cima")
+                     senha1 = input("Digite a Senha: ")
+
+                senha2 = input("Digite novamente a mesma senha:")
+                while True:
+                    if(senha1 != senha2):
+                        print("A senha deve ser a mesma")
+                        senha2 = input()   
+                    else: 
+                        senha_account = senha2
+                        print("conta criada")
+                        print(f"Usuario:{username_start} senha: {senha_account}")
+                        break
             else:
                 print("Ja exite um usuario com esse email ")
         case _ :
             print("Sistema fechado")
-            opcao = 3
+            break
