@@ -13,16 +13,14 @@ def validacao_senha (senha):
     
     return senha
 
-def comparacao_senha(senha1 , senha2 , username_start):
+def comparacao_senha(senha1 , senha2 ):
         while True:
                     if(senha1 != senha2):
                         print("A senha deve ser a mesma")
                         senha2 = input()   
                     else: 
-                        senha_account = senha2
                         print("conta criada")
-                        print(f"Usuario:{username_start} senha: {senha_account}")
-                        return(username_start,senha_account)
+                        return(senha1,senha2)
 
 
         

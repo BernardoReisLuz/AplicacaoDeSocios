@@ -18,7 +18,6 @@ while (True ):
     match (selecao):
 
         case "1" :
-         
             if(username_start == None or username_start == ""):
                 print("Voce nao possui uma conta ")
             else:
@@ -27,6 +26,7 @@ while (True ):
                 if(email_cheak == username_start and  password_cheak == senha_account):
                     print("Acesso liberado")
                 elif(email_cheak == username_start and senha_account != password_cheak ):
+                    print(senha_account, password_cheak , email_cheak , username_start)
                     print("A senha esta incorreta")
                 else:
                     print("Usuario e Senha ambos estão incorreto ")
@@ -52,7 +52,8 @@ while (True ):
                 modulo.validacao_senha(senha1)
 
                 senha2 = input("Digite novamente a mesma senha:")
-                modulo.comparacao_senha(senha1 , senha2 , username_start)
+                modulo.comparacao_senha(senha1,senha2)
+                senha_account = senha2
                 
             else:
                 print("Ja exite um usuario com esse email ")
