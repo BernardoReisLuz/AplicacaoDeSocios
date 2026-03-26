@@ -4,6 +4,9 @@
 #Falta tmb os levatamentos de requisitos , funcionais e nao funcionais , fluxo que vemos no treco do rubem , diagrama de classe(todos que nos sabemos) , descrisao do escopo,arquitetura do sistema 
 #detalhamento de FrameWorks 
 import re #comparar se vai ter os caracters que foram pedidos dentro da requisição re
+import modulo 
+
+
 username_start = None
 senha_account= None
 
@@ -23,13 +26,14 @@ while (True ):
                 password_cheak = str(input("Informe a senha de acesso:"))
                 if(email_cheak == username_start and  password_cheak == senha_account):
                     print("Acesso liberado")
-                elif(email_cheak == username_start and password_cheak != senha_account ):
+                elif(email_cheak == username_start and senha_account != password_cheak ):
                     print("A senha esta incorreta")
                 else:
                     print("Usuario e Senha ambos estão incorreto ")
         
         case "2" :
             #Gostaria de fazer isso em poo , mas estou com um pouco de dificuldade na sintaxe e me perdendo pelo padrao que me recordo no Java
+           
             if(username_start == None and senha_account == None):
                 username_start = str(input("Digite o email de acesso do usuario:"))
                 while True: #vai que nao preenche o email, ainda tenho que fazer uma verificação sobre o email para nao recer a sem gmail.com
@@ -45,26 +49,11 @@ while (True ):
                 " -Ao menos 1 letra maiúscula"
                 )
                 senha1 = input("Digite a senha:")
-                while not(re.search(r'.{8,}',senha1) and re.search(r'[A-Z]',senha1) and re.search(r'[!@#$%&*"]',senha1) and re.search(r'\d', senha1)):
-                     print("Senha deve ter \n" \
-                " -Ao menos 8 digitos \n" \
-                " -Ao menos 1 caracter especial(!@#$%&*) \n" \
-                " -Ao menos 1 numero \n" \
-                " -Ao menos 1 letra maiúscula"
-                )
-                     print("Senha deve conter o requisitos informados a cima")
-                     senha1 = input("Digite a Senha: ")
+                modulo.validacao_senha(senha1)
 
                 senha2 = input("Digite novamente a mesma senha:")
-                while True:
-                    if(senha1 != senha2):
-                        print("A senha deve ser a mesma")
-                        senha2 = input()   
-                    else: 
-                        senha_account = senha2
-                        print("conta criada")
-                        print(f"Usuario:{username_start} senha: {senha_account}")
-                        break
+                modulo.comparacao_senha(senha1 , senha2 , username_start)
+                
             else:
                 print("Ja exite um usuario com esse email ")
         case _ :
