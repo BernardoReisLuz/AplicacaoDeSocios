@@ -3,12 +3,21 @@
 #bonus : talvez tenhamos que fazer uma interface mesmo ela nao sendo obrigatoria 
 #Falta tmb os levatamentos de requisitos , funcionais e nao funcionais , fluxo que vemos no treco do rubem , diagrama de classe(todos que nos sabemos) , descrisao do escopo,arquitetura do sistema 
 #detalhamento de FrameWorks 
-import re #comparar se vai ter os caracters que foram pedidos dentro da requisição re
+ #comparar se vai ter os caracters que foram pedidos dentro da requisição re
 import modulo 
+import sqlite3
 
+conexao = sqlite3.connect("banco.db") # link com banco
+cursor = conexao.cursor() #obj que serve como mensageiro para o banco de dados
 
-username_start = None
-senha_account= None
+cursor.execute("""CREATE TABLE IF NOT EXISTS cadastro ( 
+               id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+               email TEXT NOT NULL UNIQUE,
+               senha TEXT NOT NULL
+               )""")
+conexao.commit()
+#tabela já esta criada
+
 
 while (True ):
     print("Qual operacao deseja realizar ")
@@ -18,23 +27,14 @@ while (True ):
     match (selecao):
 
         case "1" :
-            if(username_start == None or username_start == ""):
-                print("Voce nao possui uma conta ")
-            else:
-                email_cheak = str(input("Informe o email de acesso:"))
-                password_cheak = str(input("Informe a senha de acesso:"))
-                if(email_cheak == username_start and  password_cheak == senha_account):
-                    print("Acesso liberado")
-                elif(email_cheak == username_start and senha_account != password_cheak ):
-                    print(senha_account, password_cheak , email_cheak , username_start)
-                    print("A senha esta incorreta")
-                else:
-                    print("Usuario e Senha ambos estão incorreto ")
+                username_start = input("escreva ou o usuario da conta:")
+                senha_account = input("escreva a senha da conta:")
+                modulo.login(username_start,senha_account)
         
         case "2" :
             #Gostaria de fazer isso em poo , mas estou com um pouco de dificuldade na sintaxe e me perdendo pelo padrao que me recordo no Java
-           
-            if(username_start == None and senha_account == None):
+           #ainda precisa ser melhorada
+            
                 username_start = str(input("Digite o email de acesso do usuario:"))
                 while True: #vai que nao preenche o email, ainda tenho que fazer uma verificação sobre o email para nao recer a sem gmail.com
                     if(username_start == None or username_start == "") : 
@@ -54,9 +54,10 @@ while (True ):
                 senha2 = input("Digite novamente a mesma senha:")
                 modulo.comparacao_senha(senha1,senha2)
                 senha_account = senha2
+                modulo.cadastro_realizado(username_start,senha_account)
                 
-            else:
-                print("Ja exite um usuario com esse email ")
+                
+            
         case _ :
             print("Sistema fechado")
             break
