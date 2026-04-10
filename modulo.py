@@ -11,12 +11,10 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS cadastro (
                )""")
 conexao.commit()
 
-  
-
-
 
 def validacao_senha (senha):
-    while not(re.search(r'.{8,}',senha) and re.search(r'[A-Z]',senha) and re.search(r'[!@#$%&*"]',senha) and re.search(r'\d', senha)):
+    padrao = r'(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%*"]).{8,}$'
+    while not re.search(padrao, senha): #expressão regular para verificar se tem o que é necessario para a senha
                      print("Senha deve ter \n" \
                 " -Ao menos 8 digitos \n" \
                 " -Ao menos 1 caracter especial(!@#$%&*) \n" \
@@ -51,6 +49,7 @@ def login(email , senha ):
    try:
          cursor.execute("SELECT * FROM cadastro WHERE email = ?",(email,))
          usuario = cursor.fetchone()
+
          if usuario is None:
                raise ValueError("Conta não encontrada")
             
@@ -66,7 +65,13 @@ def login(email , senha ):
                     print("email ou senha estão incorretos")
                     return False
 
-   except sqlite3.ValueError:
-         print("Vc não possui uma conta")
-              
+   except ValueError:
+         print("Conta não encontrada")
+         print("Você não possui uma conta , Crie uma e tente novamente")
 
+# Dropa a db para conseguir limpar os dados 
+def limpar():
+      cursor.execute("DELETE FROM cadastro")
+      cursor.execute("DELETE FROM sqlite_sequence WHERE name='cadastro'")
+      conexao.commit()
+    
