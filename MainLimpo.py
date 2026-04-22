@@ -1,4 +1,4 @@
-# Falta : Parte dos dois fatores , parte de liberar a atividade , otimizar, validações(email)
+# Falta : Parte dos dois fatores , parte de liberar a atividade , otimizar,
 #bonus : talvez tenhamos que fazer uma interface mesmo ela nao sendo obrigatoria 
 #Falta tmb os levatamentos de requisitos , funcionais e nao funcionais , fluxo que vemos no treco do rubem , diagrama de classe(todos que nos sabemos) , descrisao do escopo,arquitetura do sistema 
 #detalhamento de FrameWorks 
@@ -13,10 +13,12 @@ cursor = conexao.cursor() #obj que serve como mensageiro para o banco de dados
 cursor.execute("""CREATE TABLE IF NOT EXISTS cadastro ( 
                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                email TEXT NOT NULL UNIQUE,
-               senha TEXT NOT NULL
+               senha TEXT NOT NULL,
+               nome_usuario TEXT NOT NULL
                )""")
 conexao.commit()
 
+modulo.limpar()
 #tabela já esta criada
 
 #While que vai fazer as ações 
@@ -33,17 +35,15 @@ while (True ):
                 senha_account = input("escreva a senha da conta:")
                 #Entra os inputs e faz a validação que esta no modulo
                 modulo.login(username_start,senha_account)
+                print(f'O que deseja realisar Sr.{username_start}?')
         
         case "2" :
             #Gostaria de fazer isso em poo , mas estou com um pouco de dificuldade na sintaxe e me perdendo pelo padrao que me recordo no Java
            #ainda precisa ser melhorada
             
                 username_start = str(input("Digite o email de acesso do usuario:"))
-                while True: #vai que nao preenche o email, ainda tenho que fazer uma verificação sobre o email para nao recer a sem gmail.com
-                    if(username_start == None or username_start == "") : 
-                        username_start = str(input("Preecha com um email:"))
-                    else:
-                     break 
+                #vai passar pela validacao do email criada
+                modulo.validacao_email(username_start)
                 
                 print("Senha deve ter \n" \
                 " -Ao menos 8 digitos \n" \
@@ -58,6 +58,7 @@ while (True ):
                 senha2 = input("Digite novamente a mesma senha:")
                 modulo.comparacao_senha(senha1,senha2)
                 senha_account = senha2
+                nome_usuario = input("Agora informe o seu nome:")
                 modulo.cadastro_realizado(username_start,senha_account)
                 #Conta criada
                 

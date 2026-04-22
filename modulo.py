@@ -7,13 +7,24 @@ cursor = conexao.cursor() #obj que serve como mensageiro para o banco de dados
 cursor.execute("""CREATE TABLE IF NOT EXISTS cadastro ( 
                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                email TEXT NOT NULL UNIQUE,
-               senha TEXT NOT NULL
+               senha TEXT NOT NULL,
+               nome_usuario TEXT NOT NULL
                )""")
 conexao.commit()
 
+def validacao_email(email):
+      padrao = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+      while not re.match(padrao, email):
+        print("Email Invalido")
+        print("O Email de usuario deve segir os exemplos" \
+        "email@gmail.com , email@outlook.com e assim por diante")
+        email = input("Digite o Email:")
+      else:
+        return(email)
+      
 
 def validacao_senha (senha):
-    padrao = r'(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%*"]).{8,}$'
+    padrao = r'(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%*&"]).{8,}$'
     while not re.search(padrao, senha): #expressão regular para verificar se tem o que é necessario para a senha
                      print("Senha deve ter \n" \
                 " -Ao menos 8 digitos \n" \
@@ -36,7 +47,7 @@ def comparacao_senha(senha1 , senha2 ):
                     
 def cadastro_realizado(email , senha):
     try:
-        cursor.execute("INSERT INTO cadastro (email,senha) VALUES(?,?)", (email, senha))
+        cursor.execute("INSERT INTO cadastro (email,senha,nome_usuario) VALUES(?,?,?)", (email, senha))
         conexao.commit()
         print("usuario cadastrado")
     except sqlite3.IntegrityError:
@@ -68,6 +79,7 @@ def login(email , senha ):
    except ValueError:
          print("Conta não encontrada")
          print("Você não possui uma conta , Crie uma e tente novamente")
+
 
 # Dropa a db para conseguir limpar os dados 
 def limpar():
