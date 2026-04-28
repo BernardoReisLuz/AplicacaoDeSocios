@@ -1,7 +1,7 @@
 import re
 import sqlite3
 
-conexao = sqlite3.connect("banco.db") # link com banco
+conexao = sqlite3.connect("Registros.db") # link com banco
 cursor = conexao.cursor() #obj que serve como mensageiro para o banco de dados
 
 cursor.execute("""CREATE TABLE IF NOT EXISTS cadastro ( 
@@ -45,9 +45,9 @@ def comparacao_senha(senha1 , senha2 ):
                     else: 
                         return(senha1,senha2)
                     
-def cadastro_realizado(email , senha):
+def cadastro_realizado(email , senha, nome_usuario):
     try:
-        cursor.execute("INSERT INTO cadastro (email,senha,nome_usuario) VALUES(?,?,?)", (email, senha))
+        cursor.execute("INSERT INTO cadastro (email,senha,nome_usuario) VALUES(?,?,?)", (email, senha, nome_usuario))
         conexao.commit()
         print("usuario cadastrado")
     except sqlite3.IntegrityError:
@@ -60,6 +60,7 @@ def login(email , senha ):
    try:
          cursor.execute("SELECT * FROM cadastro WHERE email = ?",(email,))
          usuario = cursor.fetchone()
+         
 
          if usuario is None:
                raise ValueError("Conta não encontrada")
@@ -70,15 +71,17 @@ def login(email , senha ):
                 usuario = cursor.fetchone()
 
                 if usuario:
+                    nome = usuario[3]
                     print("Login realizado!")
-                    return True
+                    print(f"Qual ação deseja realisar {nome}")
+                    
                 else:
                     print("email ou senha estão incorretos")
                     return False
 
    except ValueError:
-         print("Conta não encontrada")
          print("Você não possui uma conta , Crie uma e tente novamente")
+
 
 
 # Dropa a db para conseguir limpar os dados 
@@ -87,3 +90,7 @@ def limpar():
       cursor.execute("DELETE FROM sqlite_sequence WHERE name='cadastro'")
       conexao.commit()
     
+def puxar_nome(email):
+      cursor.execute("SELECT * FROM cadastro WHERE email = ?",(email))
+      
+      return

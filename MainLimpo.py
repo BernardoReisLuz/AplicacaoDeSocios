@@ -6,7 +6,7 @@
 import modulo 
 import sqlite3
 
-conexao = sqlite3.connect("banco.db") # link com banco
+conexao = sqlite3.connect("Registros.db") # link com banco
 cursor = conexao.cursor() #obj que serve como mensageiro para o banco de dados
 
 # Vai criar a tabela para a entrada de dados , se ela já existir so vai add direto nela
@@ -16,9 +16,11 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS cadastro (
                senha TEXT NOT NULL,
                nome_usuario TEXT NOT NULL
                )""")
+
+
 conexao.commit()
 
-modulo.limpar()
+
 #tabela já esta criada
 
 #While que vai fazer as ações 
@@ -31,11 +33,35 @@ while (True ):
 
         case "1" : 
                 # Tentar checar se tem uma conta com o usuario colocado
-                username_start = input("escreva ou o usuario da conta:")
+                username_start = input("escreva o usuario da conta:")
                 senha_account = input("escreva a senha da conta:")
                 #Entra os inputs e faz a validação que esta no modulo
                 modulo.login(username_start,senha_account)
-                print(f'O que deseja realisar Sr.{username_start}?')
+                ## Tem que fazer para puxar o nome que o usuario salvou
+                ##dar um jeito de fazer esperar a conta logar
+                while(True):
+                    print("1 2 3")
+                    selecao_acao = input()
+                    match(selecao_acao):
+                         
+                         case "1":
+                              ##
+                              print("Socios")
+                              #Tabela para os socios que possa armazenar arquivos
+                         case "2":
+                              ##
+                              print("Realizar/Aprovar compra")
+                         case "3":
+                              ## 
+                              print("Documentos Recursos")
+                              
+                         case "4":
+                              print()
+                    
+                         case _ :
+                              print("Nao existe essa opção escolha dentro dessas")
+                    
+                
         
         case "2" :
             #Gostaria de fazer isso em poo , mas estou com um pouco de dificuldade na sintaxe e me perdendo pelo padrao que me recordo no Java
@@ -59,11 +85,14 @@ while (True ):
                 modulo.comparacao_senha(senha1,senha2)
                 senha_account = senha2
                 nome_usuario = input("Agora informe o seu nome:")
-                modulo.cadastro_realizado(username_start,senha_account)
+                modulo.cadastro_realizado(username_start,senha_account, nome_usuario)
                 #Conta criada
                 
                 
             
-        case _ :
+        case "3":
             print("Sistema fechado")
             break
+          
+        case _ :
+            print("Selecione uma das 3 opções o selecionado não apresenta dentro dessas opções")
